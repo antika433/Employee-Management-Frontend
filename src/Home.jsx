@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { useTable, useGlobalFilter, useSortBy, usePagination } from "react-table";
 import axios from "axios";
+import { BACKEND_URL } from "./Config";
 import "./App.css";
 
 const Home = () => {
@@ -40,7 +41,7 @@ const Home = () => {
 
   const getAllEmployees = () => {
     axios
-      .get("http://localhost:8085/employees")
+      .get(`${BACKEND_URL}/employees`)
       .then((res) => setEmployees(res.data))
       .catch((err) => console.error("Error fetching employees:", err));
   };
@@ -63,7 +64,7 @@ const Home = () => {
   const handleDelete = async (emp) => {
     const isConfirmed = window.confirm("Are you sure you want to Delete?");
     if (isConfirmed) {
-      await axios.delete(`http://localhost:8085/employees/${emp.employeeId}`);
+      await axios.delete(`${BACKEND_URL}/employees/${emp.employeeId}`);
       getAllEmployees();
     }
   };
@@ -76,9 +77,9 @@ const Home = () => {
     }
 
     if (employeeData.employeeId) {
-      await axios.patch(`http://localhost:8085/employees/${employeeData.employeeId}`, employeeData);
+      await axios.patch(`${BACKEND_URL}/employees/${employeeData.employeeId}`, employeeData);
     } else {
-      await axios.post("http://localhost:8085/employees", employeeData);
+      await  axios.post(`${BACKEND_URL}/employees`, employeeData);
     }
 
     clearAll();
